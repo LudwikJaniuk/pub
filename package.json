@@ -1,0 +1,10 @@
+{
+  "name": "pub",
+  "version": "0.0.1",
+  "description": "WHere you go to get your news",
+  "main": "index.js",
+  "repository": "git@github.com:LudwikJaniuk/pub.git",
+  "author": "Ludvig Janiuk <ludvig.janiuk@gmail.com>",
+  "license": "MIT",
+  "private": false
+}
