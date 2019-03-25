@@ -2,18 +2,25 @@
 var assert = require("assert");
 var sum = require("../sum").sum;
 
-describe("sum of 1 and x", function() {
-  context("with y = 1", function() {
-    var y = 1
-    it("should be equal to two", function() {
-      assert.equal(sum(1, y), 2);
+describe("sum", function() {
+  context("with integers", function() {
+    var tests = [
+      { a: 1, b: 2, expected: 3 },
+      { a: 4, b: 9, expected: 13 },
+      { a: 0, b: 0, expected: 0 },
+      { a: -1, b: 2, expected: 1 },
+      { a: 1000, b: 1000, expected: 2000 },
+    ]
+    tests.forEach((test) => {
+      it(test.a + " + " + test.b + " = " + test.expected, function() {
+        assert.equal(sum(test.a, test.b), test.expected);
+      });
     });
   })
 
-  context("with y = 2", function() {
-    var y = 2
-    it("should be equal to three", function() {
-      assert.equal(sum(1, y), 3);
+  context("with strings", function() {
+    it("should concatenate strings", function() {
+      assert.equal(sum("abc", "def"), "abcdef");
     });
   })
 });
