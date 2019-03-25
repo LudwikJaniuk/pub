@@ -1,10 +1,8 @@
-var express = require("express");
-var app = express();
+console.log("Hello world")
 
-// In this file we only define the API between the web, and our server. 
-// Zero actual functionality.
+function tellTime() {
+  console.log("It is now: " + new Date().toISOString())
+}
 
-app.use(bodyParser.json());
-app.use("/", routes.homepage)
-app.use("/creators", routes.homepage)
-
+setTimeout(tellTime, 500);
+setInterval(tellTime, 1000);
