@@ -1,7 +1,8 @@
-module.exports = {
-  getAllPosts : () => null,
-  createPost : (post) => null,
-  getPost : (id) => null,
-  deletePost : (id) => null,
-  f
-}
+var express = require("express");
+const app = express()
+
+app.get("/", (req, res) => {
+  res.send("OK");
+})
+
+module.exports = app

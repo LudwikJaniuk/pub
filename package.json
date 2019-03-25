@@ -8,9 +8,13 @@
   "license": "MIT",
   "private": false,
   "devDependencies": {
-    "mocha": "^6.0.2"
+    "mocha": "^6.0.2",
+    "supertest": "^4.0.2"
   },
   "scripts": {
     "test": "mocha"
+  },
+  "dependencies": {
+    "express": "^4.16.4"
   }
 }

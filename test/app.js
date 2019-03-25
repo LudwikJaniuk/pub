@@ -1,5 +1,6 @@
 // Test file for mocha
 var assert = require("assert");
+var request = require("supertest");
 var app = require("../app");
 
 var testPost1 = {
