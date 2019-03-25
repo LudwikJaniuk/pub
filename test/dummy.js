@@ -1,8 +1,8 @@
 // Test file for mocha
 var assert = require("assert");
-var sum = require("../sum").sum;
+var app = require("./app");
 
-describe("sum of 1 and x", function() {
+describe("PUB", function() {
   context("with y = 1", function() {
     var y = 1
     it("should be equal to two", function() {
