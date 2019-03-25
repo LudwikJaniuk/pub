@@ -1,8 +1,13 @@
-var fs = require('fs');
+var reader = require("./file-reader");
+var str = require("./string-util");
 
-fs.readFile('DATA', 'utf8', function(err, contents) {
-  console.log(contents);
+reader.read((err, contents) => {
+  if(err) {
+    console.log(err);
+    return;
+  }
+  
+  console.log(str.reversed(contents));
 });
 
-console.log('after calling readFile');
 
