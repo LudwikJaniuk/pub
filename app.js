@@ -1,19 +1,8 @@
-function readFromDatabase(callback) {
-  function whenDone() {
-    callback(null, "An amazingly awesome response");
-  }
+var fs = require('fs');
 
-  // Pretend to take some time
-  setTimeout(whenDone, 1000);
-}
+fs.readFile('DATA', 'utf8', function(err, contents) {
+  console.log(contents);
+});
 
-readFromDatabase((error, response) => {
-  if (error) {
-    console.log("We got an error: " + error);
-    return;
-  }
-
-  console.log("Got this response:");
-  console.log(response);
-})
+console.log('after calling readFile');
 
