@@ -10,13 +10,15 @@ var testPost1 = {
   tags: ['foo-tag', 'bar-tag']
 }
 
-before(function(done) {
-  app.createPost(testPost1);
-})
+//before(function(done) {
+//  app.createPost(testPost1);
+//})
 
 describe("getAllPosts", function() {
-    it("returns an empty list", function() {
-      assert.equals(app.getAllPosts().length, 0);
+    it("returns 200", function(done) {
+      request(app)
+        .get("/")
+        .expect(200)
+        .end(done);
     });
-
 });
