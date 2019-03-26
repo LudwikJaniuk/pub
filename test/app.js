@@ -10,10 +10,6 @@ var testPost1 = {
   tags: ['foo-tag', 'bar-tag']
 }
 
-//before(function(done) {
-//  app.createPost(testPost1);
-//})
-
 describe("getAllPosts", function() {
     it("returns 200", function(done) {
       request(app)

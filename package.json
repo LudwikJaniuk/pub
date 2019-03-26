@@ -12,7 +12,9 @@
     "supertest": "^4.0.2"
   },
   "scripts": {
-    "test": "mocha"
+    "test": "mocha",
+    "start": "node index.js",
+    "run": "node index.js"
   },
   "dependencies": {
     "express": "^4.16.4"
