@@ -8,10 +8,9 @@
   "license": "MIT",
   "private": false,
   "devDependencies": {
-    "mocha": "^6.0.2",
-    "tape": "^4.10.1"
+    "mocha": "^6.0.2"
   },
   "scripts": {
-    "test": "mocha"
+    "test": "node test/dummy.js"
   }
 }

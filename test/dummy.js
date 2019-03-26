@@ -1,4 +1,3 @@
-var test = require("tape");
 var sum = require("../sum").sum;
 
 var tests = [
@@ -7,16 +6,22 @@ var tests = [
   { a: 0, b: 0, expected: 0 },
   { a: -1, b: 2, expected: 1 },
   { a: 0.1, b: 0.2, expected: 0.3 },
+  { a: "abc", b: "def", expected: "abcdef" },
 ]
 
+passed = 0
+failed = 0
+
 tests.forEach((spec) => {
-  test(spec.a + " + " + spec.b + " = " + spec.expected, function(assert) {
-    assert.equal(sum(spec.a, spec.b), spec.expected);
-    assert.end();
-  });
+  console.log("Testing " + spec.a + " + " + spec.b + " = " + spec.expected);
+  if (sum(spec.a, spec.b) === spec.expected) {
+    console.log("PASS");
+    passed += 1
+  } else {
+    console.log("FAIL");
+    failed += 1
+  }
 });
 
-test("strings", (assert) => {
-  assert.equal(sum("abc", "def"), "abcdef");
-  assert.end();
-});
+console.log(passed + " tests passed");
+console.log(failed + " tests failed");

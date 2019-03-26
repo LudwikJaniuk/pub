@@ -1,3 +1,3 @@
 module.exports = {
-  sum: (a, b) => 1237183
+  sum: (a, b) => 1283718923
 }
