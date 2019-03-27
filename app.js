@@ -1,29 +1,41 @@
-var express = require("express");
+var createError = require('http-errors');
+var express = require('express');
+var path = require('path');
+var cookieParser = require('cookie-parser');
+var logger = require('morgan');
 
-// app is the object that describes the whole... app. 
-// First we create an empty app, then we procedurally modify it to add
-// all the functionality we want.
-const app = express()
+var indexRouter = require('./routes/index');
+var usersRouter = require('./routes/users');
 
-// We add an endpoint (GET /) and define what funciton should be called to handle it
-app.get("/", (req, res) => {
-  res.status(500).send("Not implemented");
-})
+var app = express();
 
-app.get("/api/all", (req, res) => {
-  res.status(500).send("Not implemented");
-})
+// view engine setup
+app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'jade');
 
-app.get("/api/post/:id", (req, res) => {
-  res.status(500).send("Not implemented");
+app.use(logger('dev'));
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+app.use(cookieParser());
+app.use(express.static(path.join(__dirname, 'public')));
+
+app.use('/', indexRouter);
+app.use('/users', usersRouter);
+
+// catch 404 and forward to error handler
+app.use(function(req, res, next) {
+  next(createError(404));
 });
 
-app.post("/api/post", (req, res) => {
-  res.status(500).send("Not implemented");
+// error handler
+app.use(function(err, req, res, next) {
+  // set locals, only providing error in development
+  res.locals.message = err.message;
+  res.locals.error = req.app.get('env') === 'development' ? err : {};
+
+  // render the error page
+  res.status(err.status || 500);
+  res.render('error');
 });
 
-app.delete("/api/post/:id", (req, res) => {
-  res.status(500).send("Not implemented");
-});
-
-module.exports = app
+module.exports = app;
