@@ -16,6 +16,17 @@ router.get('/', function(req, res, next) {
 
     result = [];
 
+    for(var post of posts) {
+      result.push({
+        'title': post.title,
+        content: post.content,
+        author: post.author,
+        tags: post.tags,
+        "post-date": post.postDate,
+        id: post.id
+      });
+    }
+
     res.status(200);
     res.send({posts: result});
   })

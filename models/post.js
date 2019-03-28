@@ -29,7 +29,7 @@ module.exports= {
 
     newPost = {
       title: postData.title,
-      contents: postData.contents,
+      content: postData.content,
       author: postData.author,
       tags: tags, 
       postDate: Date(),
