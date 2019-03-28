@@ -15,6 +15,7 @@ describe("getAllPosts", function() {
       request(app)
         .get("/api/")
         .expect(200)
+        .expect({"posts": []})
         .end(done);
     });
 });
