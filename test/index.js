@@ -11,7 +11,7 @@ var testPost1 = {
 }
 
 describe("getAllPosts", function() {
-    it("returns 200", function(done) {
+    it("Returns a well-formatted empty response.", function(done) {
       request(app)
         .get("/api/")
         .expect(200)
