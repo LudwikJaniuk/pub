@@ -13,8 +13,9 @@ var testPost1 = {
 describe("getAllPosts", function() {
     it("returns 200", function(done) {
       request(app)
-        .get("/")
+        .get("/api/")
         .expect(200)
         .end(done);
     });
 });
+
