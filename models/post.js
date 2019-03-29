@@ -37,6 +37,6 @@ module.exports= {
     }
 
     posts.push(newPost);
-    cb(null);
+    cb(null, lodash.cloneDeep(newPost));
   }
 }
