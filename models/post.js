@@ -6,9 +6,23 @@ posts = [];
 // Eploiting closures in Javascript - ask me about this feature!
 nextID = function() { var x = 0; return () => {x++; return x;}}()
 
+
 module.exports= {
   getAll: function(cb) {
     cb(null, lodash.cloneDeep(posts)); // This will save you many a headache - always clone resources your're returning
+  },
+  getOne(id, cb) {
+    var foundPost = null;
+    console.log(posts);
+    console.log(id);
+    for(var post of posts) {
+      if(post.id == id) {
+        console.log(post);
+        foundPost = lodash.cloneDeep(post);
+        break;
+      }
+    }
+    cb(null, foundPost);
   },
   deleteAll: function(cb) {
     posts = [];
