@@ -46,6 +46,8 @@ module.exports= {
       }
     }
 
+    console.log(postData);
+
     newPost = {
       title: postData.title,
       content: postData.content,

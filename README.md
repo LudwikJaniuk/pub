@@ -18,7 +18,7 @@ response: `{post: Post}`
 
 If 'id' does not correspond to any post, a 404 status instead.
 
-## `POST /api/post/`
+## `POST /api/`
 Create a new post and return the id of the newly created post
 
 body: 

@@ -1,5 +1,22 @@
 extends layout
 
 block content
-  h1= title
-  p Welcome to #{title}
+  img(src='images/logo.png')
+  p Posts (#{posts.length}):
+  each post in posts
+    hr
+    p
+      b= post.title
+    p= post.content
+    p
+      i= post.author
+    hr
+
+  form(action="/api/" method="POST")
+    p "Title:"
+    input(type="text" name="title")
+    p "Contents:"
+    input(type="text" name="content")
+    p "By:"
+    input(type="text" name="author")
+    input(type="submit")
