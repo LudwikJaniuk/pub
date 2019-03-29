@@ -48,7 +48,7 @@ function validateEqualValues(post, original) {
 }
 
 before(function(done) {
-    Post.deleteAll(done);
+  Post.deleteAll(done);
 });
 
 var printOnError = done => (err, res) => {
@@ -63,10 +63,10 @@ describe("getAllPosts", function() {
   context("With no posts", function () {
     it("Returns a well-formatted empty response.", function(done) {
       request(app)
-        .get("/api/")
-        .expect(200)
-        .expect({"posts": []})
-        .end(done);
+      .get("/api/")
+      .expect(200)
+      .expect({"posts": []})
+      .end(done);
     });
   });
 
@@ -81,13 +81,13 @@ describe("getAllPosts", function() {
 
     it("Returns one well-formatted post.", function(done) {
       request(app)
-        .get("/api/")
-        .expect(200)
-        .expect(res => {
-          if(res.body.posts.length !== 1) throw new Error(res.body.posts);
-          validateWellFormattedPost(res.body.posts[0]);
-        })
-        .end(printOnError(done));
+      .get("/api/")
+      .expect(200)
+      .expect(res => {
+        if(res.body.posts.length !== 1) throw new Error(res.body.posts);
+        validateWellFormattedPost(res.body.posts[0]);
+      })
+      .end(printOnError(done));
     });
   });
 });
@@ -105,12 +105,12 @@ describe("getPost", function() {
 
     it("Returns the correct post when queried", function(done) {
       request(app)
-        .get("/api/post/" + createdPost.id)
-        .expect(200)
-        .expect(res => {res.post = res.body.post;})
-        .expect(res => validateWellFormattedPost(res.post))
-        .expect(res => validateEqualValues(res.post, createdPost))
-        .end(printOnError(done));
+      .get("/api/post/" + createdPost.id)
+      .expect(200)
+      .expect(res => {res.post = res.body.post;})
+      .expect(res => validateWellFormattedPost(res.post))
+      .expect(res => validateEqualValues(res.post, createdPost))
+      .end(printOnError(done));
     });
 
     it("Returns an empty body when the post does not exist", function(done) {
@@ -121,4 +121,53 @@ describe("getPost", function() {
     });
   });
 });
+
+describe("createPost", function() {
+  context("With no posts existing", function() {
+    var createdPost = null;
+
+    it("Creates the post in the database", function(done) {
+      request(app)
+      .post("/api/")
+      .send(testPost1)
+      .expect(200)
+      .expect(res => {
+        if(!typeof(res.body.id) === "string") throw new Error("Id is not a string");
+      })
+      .end((err, res)=> {
+        if(err) {
+          printOnError(done)(err, res);
+        }
+        ensurePostExistsInDb(testPost1, printOnError(done));
+      });
+    });
+
+    it("Returns matching ID", function(done) {
+      request(app)
+      .post("/api/")
+      .send(testPost1)
+      .expect(200)
+      .expect(res => {
+        if(!typeof(res.body.id) === "string") throw new Error("Id is not a string");
+      })
+      .end((err, res)=> {
+        if(err) {
+          printOnError(done)(err, res);
+        }
+        ensurePostExistsInDb(testPost1, (err, id) => {
+          if(err) {
+            printOnError(done)(err, res);
+            return;
+          }
+
+          if(id !== res.body.id) {
+            err = new Error("Id does not match");
+          }
+          printOnError(done)(err, res);
+        })
+      });
+    });
+  });
+});
+
 
