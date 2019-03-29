@@ -47,6 +47,25 @@ function validateEqualValues(post, original) {
   validateEqualTags(post.tags, original.tags);
 }
 
+function ensurePostExistsInDB(post, cb) {
+  Post.getAll((err, posts) =>{
+    if(err) {cb(err); return;}
+    for(var dbPost of posts) {
+      if(
+        dbPost.title === post.title &&
+        dbPost.content === post.content &&
+        dbPost.authod === post.author &&
+        validateEqualTags(dbPost.tags, post.tags)
+      ) {
+        cb(null, dbPost.id);
+        return;
+      }
+    }
+
+    cb(new Error("Post not found!"));
+  })
+}
+
 before(function(done) {
   Post.deleteAll(done);
 });
@@ -138,7 +157,7 @@ describe("createPost", function() {
         if(err) {
           printOnError(done)(err, res);
         }
-        ensurePostExistsInDb(testPost1, printOnError(done));
+        ensurePostExistsInDB(testPost1, printOnError(done));
       });
     });
 
@@ -154,7 +173,7 @@ describe("createPost", function() {
         if(err) {
           printOnError(done)(err, res);
         }
-        ensurePostExistsInDb(testPost1, (err, id) => {
+        ensurePostExistsInDB(testPost1, (err, id) => {
           if(err) {
             printOnError(done)(err, res);
             return;
