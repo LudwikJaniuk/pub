@@ -5,8 +5,16 @@ Public Underrättelse Board - Where you go to get your news
 
 # API
 
-`GET /api/`
+## `GET /api/`
 response: `{posts: [Post]}`
+
+
+## `GET /api/post/:id`
+response: `{post: Post}`
+If 'id' does not correspond to any post, a 404 status instead.
+
+
+## Definitions
 
 ```
 Post := {
@@ -18,4 +26,3 @@ Post := {
  id, // String
 }
 ```
-

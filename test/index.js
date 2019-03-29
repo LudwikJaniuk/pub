@@ -4,21 +4,21 @@ var request = require("supertest");
 var app = require("../app");
 var Post = require("../models/post");
 
-var expectedPostKeys = [
+const NONEXISTING_ID = 1337;
+const expectedPostKeys = [
   'title',
   'content',
   'author',
   'post-date',
   'tags',
   'id',
-]
-
-var testPost1 = {
+];
+const testPost1 = {
   title: "foo title",
   content: "bar content",
   author: "baz author",
   tags: ['foo-tag', 'bar-tag']
-}
+};
 
 function validateWellFormattedPost(post) {
   for(key of expectedPostKeys) {
@@ -112,7 +112,13 @@ describe("getPost", function() {
         .expect(res => validateEqualValues(res.post, createdPost))
         .end(printOnError(done));
     });
+
+    it("Returns an empty body when the post does not exist", function(done) {
+      request(app)
+      .get("/api/post/" + NONEXISTING_ID)
+      .expect(404)
+      .end(printOnError(done));
+    });
   });
 });
-
 
