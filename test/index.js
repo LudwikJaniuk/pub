@@ -1,5 +1,5 @@
 // Test file for mocha
-var assert = require("assert");
+var _ = require("lodash");
 var request = require("supertest");
 var app = require("../app");
 var Post = require("../models/post");
@@ -24,6 +24,10 @@ function validateWellFormattedPost(post) {
   for(key of expectedPostKeys) {
     if(!(key in post)) throw new Error('Missing key ' + key);
   }
+}
+
+function isSameTags(tags1, tags2) {
+  return tags1.length === tags2.length && _.isEmpty(_.xor(tags1, tags2));
 }
 
 function validateEqualTags(tags, origTags) {
@@ -54,8 +58,8 @@ function ensurePostExistsInDB(post, cb) {
       if(
         dbPost.title === post.title &&
         dbPost.content === post.content &&
-        dbPost.authod === post.author &&
-        validateEqualTags(dbPost.tags, post.tags)
+        dbPost.author === post.author &&
+        isSameTags(dbPost.tags, post.tags)
       ) {
         cb(null, dbPost.id);
         return;
@@ -66,7 +70,7 @@ function ensurePostExistsInDB(post, cb) {
   })
 }
 
-before(function(done) {
+beforeEach(function(done) {
   Post.deleteAll(done);
 });
 
@@ -91,7 +95,7 @@ describe("getAllPosts", function() {
 
   context("With one post existing", function() {
     var createdPost;
-    before(function(done) {
+    beforeEach(function(done) {
       Post.create(testPost1, (err, result) => {
         createdPost = result;
         done(err);
@@ -115,7 +119,7 @@ describe("getPost", function() {
   context("With one post existing", function() {
     var createdPost = null;
 
-    before(function(done) {
+    beforeEach(function(done) {
       Post.create(testPost1, function(err, post) {
         createdPost = post;
         done(err);
@@ -157,7 +161,7 @@ describe("createPost", function() {
         if(err) {
           printOnError(done)(err, res);
         }
-        ensurePostExistsInDB(testPost1, printOnError(done));
+        ensurePostExistsInDB(testPost1, (err, id) => printOnError(done)(err, res));
       });
     });
 

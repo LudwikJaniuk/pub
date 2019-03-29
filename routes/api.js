@@ -52,4 +52,13 @@ router.get('/post/:id', function(req, res) {
   });
 })
 
+router.post('/', function(req, res, next) {
+  Post.create(req.body, (err, newPost) => {
+    if(err) { next(err); return; }
+
+    res.status(200);
+    res.send({id: newPost.id});
+  });
+});
+
 module.exports = router;
