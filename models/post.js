@@ -13,11 +13,8 @@ module.exports= {
   },
   getOne(id, cb) {
     var foundPost = null;
-    console.log(posts);
-    console.log(id);
     for(var post of posts) {
       if(post.id == id) {
-        console.log(post);
         foundPost = lodash.cloneDeep(post);
         break;
       }

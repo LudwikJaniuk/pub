@@ -53,9 +53,8 @@ before(function(done) {
 
 var printOnError = done => (err, res) => {
   if(err) {
-    console.log("Errors occured");
     if(res.body) console.log(res.body);
-    //if(res.error) console.log(res.error);
+    if(res.error) console.log(res.error);
   }
   done(err, res);
 }
