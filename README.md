@@ -33,6 +33,11 @@ body:
 
 response: `{id}`
 
+## `DELETE /api/post/_id`
+Deletes a post by its ID
+
+response: 200 if found and deleted, 404 if not found
+
 ## Definitions
 ```
 Post := {

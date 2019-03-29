@@ -1,5 +1,6 @@
 // Test file for mocha
 var _ = require("lodash");
+var async = require("async");
 var request = require("supertest");
 var app = require("../app");
 var Post = require("../models/post");
@@ -13,11 +14,19 @@ const expectedPostKeys = [
   'tags',
   'id',
 ];
+
 const testPost1 = {
   title: "foo title",
   content: "bar content",
   author: "baz author",
   tags: ['foo-tag', 'bar-tag']
+};
+
+const testPost2 = {
+  title: "foo titl2",
+  content: "bar content2",
+  author: "baz author2",
+  tags: ['foo-tag2', 'bar-tag2']
 };
 
 function validateWellFormattedPost(post) {
@@ -191,6 +200,103 @@ describe("createPost", function() {
       });
     });
   });
+});
+
+describe("deletePost", function() {
+  context("With one post existing, deleting it", function() {
+    var createdPost = null;
+
+    beforeEach(function(done) {
+      Post.create(testPost1, function(err, post) {
+        createdPost = post;
+        done(err);
+      });
+    });
+
+    it("succeeds", function(done) {
+      request(app)
+      .delete("/api/post/" + createdPost.id)
+      .expect(200)
+      .end(printOnError(done));
+    });
+
+    it("makes the db empty", function(done) {
+      request(app)
+      .get("/api/post/" + NONEXISTING_ID)
+      .expect(200)
+      .end((err, res) => {
+        if(err) { printOnError(done)(err, res); return;}
+
+        Post.getAll((err, posts) => {
+          if(err) { printOnError(done)(err, res); return;}
+          if(_.isEmpty(posts)) done();
+          else {
+            console.log(posts);
+            done(new Error("Posts are not empty"))
+          }
+        })
+      });
+    });
+  });
+
+  context("With two posts existing, deleting one of them", function() {
+    var postToDelete = null;
+    var otherPost = null;
+
+    beforeEach(function(done) {
+      async.parallel([
+        cb => Post.create(testPost1, cb),
+        cb => Post.create(testPost2, cb),
+      ], (err, results) => {
+        postToDelete = results[0];
+        otherPost = results[1];
+        done(err);
+      });
+    });
+
+    it("Deletes the posts to delete", function(done) {
+      request(app)
+      .delete("/api/post/" + postToDelete.id)
+      .expect(200)
+      .end((err, res) => {
+        if(err) { printOnError(done)(err, res); return;}
+
+        Post.getAll((err, posts) => {
+          if(err) { printOnError(done)(err, res); return;}
+          for(var post of posts) {
+            if(post.id === postToDelete.id) {
+              console.log(posts);
+              done(new Error("Post was not deleted"))
+              return;
+            }
+          }
+          done();
+        })
+      });
+    })
+
+    it("Does not delete the other post", function(done) {
+      request(app)
+      .delete("/api/post/" + postToDelete.id)
+      .expect(200)
+      .end((err, res) => {
+        if(err) { printOnError(done)(err, res); return;}
+
+        Post.getAll((err, posts) => {
+          if(err) { printOnError(done)(err, res); return;}
+          for(var post of posts) {
+            if(post.id === otherPost.id) {
+              done();
+              return;
+            }
+          }
+          console.log(posts);
+          done(new Error("Other post was deleted"))
+        })
+      });
+    })
+
+  })
 });
 
 
