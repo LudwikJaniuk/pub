@@ -61,4 +61,18 @@ router.post('/', function(req, res, next) {
   });
 });
 
+router.delete('/post/:id', function(req, res, next) {
+  Post.deleteOne(req.params.id, (err, wasDeleted) => {
+    if(err) {next(err); return;}
+    if(!wasDeleted) {
+      res.status(400);
+      res.send("Post not found");
+      return;
+    }
+
+    res.status(200);
+    res.send("OK");
+  });
+})
+
 module.exports = router;

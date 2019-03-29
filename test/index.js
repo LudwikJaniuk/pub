@@ -222,7 +222,7 @@ describe("deletePost", function() {
 
     it("makes the db empty", function(done) {
       request(app)
-      .get("/api/post/" + NONEXISTING_ID)
+      .delete("/api/post/" + createdPost.id)
       .expect(200)
       .end((err, res) => {
         if(err) { printOnError(done)(err, res); return;}

@@ -1,21 +1,21 @@
-lodash = require("lodash");
+_ = require("lodash");
 
 posts = [];
 
 // Generates a new ID every call. 
 // Eploiting closures in Javascript - ask me about this feature!
-nextID = function() { var x = 0; return () => {x++; return x;}}()
+nextID = function() { var x = 0; return () => {x++; return ""+x;}}()
 
 
 module.exports= {
   getAll: function(cb) {
-    cb(null, lodash.cloneDeep(posts)); // This will save you many a headache - always clone resources your're returning
+    cb(null, _.cloneDeep(posts)); // This will save you many a headache - always clone resources your're returning
   },
   getOne(id, cb) {
     var foundPost = null;
     for(var post of posts) {
       if(post.id == id) {
-        foundPost = lodash.cloneDeep(post);
+        foundPost = _.cloneDeep(post);
         break;
       }
     }
@@ -24,6 +24,14 @@ module.exports= {
   deleteAll: function(cb) {
     posts = [];
     cb(null);
+  },
+  deleteOne: function(id, cb /* (err, wasDeleted) */) {
+    index = _.findIndex(posts, post => post.id === id);
+    if(index === -1) cb(null,false);
+    else {
+      posts.splice(index, 1);
+      cb(null, true);
+    }
   },
   create: function(postData, cb) {
     tags = [];
@@ -48,6 +56,6 @@ module.exports= {
     }
 
     posts.push(newPost);
-    cb(null, lodash.cloneDeep(newPost));
+    cb(null, _.cloneDeep(newPost));
   }
 }

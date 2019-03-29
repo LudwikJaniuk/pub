@@ -33,10 +33,10 @@ body:
 
 response: `{id}`
 
-## `DELETE /api/post/_id`
+## `DELETE /api/post/:id`
 Deletes a post by its ID
 
-response: 200 if found and deleted, 404 if not found
+response: 200 if found and deleted, 400 if not found for deletion
 
 ## Definitions
 ```
